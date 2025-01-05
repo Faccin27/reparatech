@@ -1,5 +1,9 @@
-import Image from "next/image";
+import Header from "@/components/Header";
 
 export default function Home() {
-  return <div className="bg-blue-600">AQ</div>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 }
