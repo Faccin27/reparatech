@@ -8,7 +8,7 @@ export default function Header() {
 
   return (
     <div className="w-full fixed top-0 left-0 px-4 pt-4 z-50">
-      <header className="bg-black text-white px-4 py-3 rounded-2xl shadow-lg max-w-7xl mx-auto backdrop-blur-sm bg-opacity-90">
+      <header className="bg-[#121212] text-white px-4 py-3 rounded-2xl shadow-lg max-w-7xl mx-auto backdrop-blur-sm bg-opacity-90">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-xl font-bold flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
