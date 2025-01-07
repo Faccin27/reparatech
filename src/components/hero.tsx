@@ -40,7 +40,7 @@ export default function Hero() {
       <div className="relative z-10 w-full">
         <div className="flex justify-between items-end">
           {/* Policy Links */}
-          <div className="bg-black bg-opacity-50 rounded-tr-xl p-4 inline-block">
+          <div className="bg-black bg-opacity-50 rounded-tr-xl p-4 inline-block border-t-2 border-blue-400/60">
             <div className="flex space-x-4">
               <Link
                 href="/privacy"
