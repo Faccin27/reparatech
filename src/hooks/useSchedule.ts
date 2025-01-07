@@ -19,7 +19,6 @@ export const horariosDisponiveis = [
     "18:00",
   ];
 
-  
 export function useSchedule() {
     const [currentMonth, setCurrentMonth] = useState(new Date());
       const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -55,5 +54,5 @@ export function useSchedule() {
         }
       };
 
-      return{handleConfirm, handleDateSelect, handleNextMonth, handlePrevMonth, handleTimeSelect, currentMonth, monthDays, selectedDate, selectedTime}
+    return{handleConfirm, handleDateSelect, handleNextMonth, handlePrevMonth, handleTimeSelect, currentMonth, monthDays, selectedDate, selectedTime}
 }

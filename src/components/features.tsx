@@ -1,31 +1,35 @@
-import { Smartphone, Clock, PenToolIcon as Tools, Cpu } from 'lucide-react'
+import { Smartphone, Clock, PenToolIcon as Tools, Cpu } from "lucide-react";
 
 const features = [
   {
     icon: Smartphone,
-    title: 'Reparo de Celular',
-    description: 'Serviço especializado para smartphones de todas as marcas. Consertamos telas, baterias, problemas de software e muito mais.',
-    gridClass: 'col-span-1 row-span-2'
+    title: "Reparo de Celular",
+    description:
+      "Serviço especializado para smartphones de todas as marcas. Consertamos telas, baterias, problemas de software e muito mais.",
+    gridClass: "col-span-1 row-span-2",
   },
   {
     icon: Clock,
-    title: 'Reparo Rápido',
-    description: 'A maioria dos reparos é concluída em 24-48 horas. Não deixe seu dispositivo parado por muito tempo.',
-    gridClass: 'col-span-1 row-span-1'
+    title: "Reparo Rápido",
+    description:
+      "A maioria dos reparos é concluída em 24-48 horas. Não deixe seu dispositivo parado por muito tempo.",
+    gridClass: "col-span-1 row-span-1",
   },
   {
     icon: Tools,
-    title: 'Serviço no Local',
-    description: 'Oferecemos serviço de reparo em domicílio para sua conveniência. Nossos técnicos vão até você.',
-    gridClass: 'col-span-1 row-span-1'
+    title: "Serviço no Local",
+    description:
+      "Oferecemos serviço de reparo em domicílio para sua conveniência. Nossos técnicos vão até você.",
+    gridClass: "col-span-1 row-span-1",
   },
   {
     icon: Cpu,
-    title: 'Reparo de Computador',
-    description: 'Diagnóstico e reparos especializados para todos os problemas de computador, desde hardware até software.',
-    gridClass: 'col-span-1 row-span-2'
-  }
-]
+    title: "Reparo de Computador",
+    description:
+      "Diagnóstico e reparos especializados para todos os problemas de computador, desde hardware até software.",
+    gridClass: "col-span-1 row-span-2",
+  },
+];
 
 export default function Features() {
   return (
@@ -42,12 +46,22 @@ export default function Features() {
             >
               <div className="p-6 flex flex-col h-full">
                 <div className="flex items-center mb-4">
-                  <feature.icon className="h-8 w-8 text-blue-500" aria-hidden="true" />
-                  <h3 className="ml-3 text-xl font-semibold text-gray-900">{feature.title}</h3>
+                  <feature.icon
+                    className="h-8 w-8 text-blue-500"
+                    aria-hidden="true"
+                  />
+                  <h3 className="ml-3 text-xl font-semibold text-gray-900">
+                    {feature.title}
+                  </h3>
                 </div>
-                <p className="text-base text-gray-600 flex-grow">{feature.description}</p>
+                <p className="text-base text-gray-600 flex-grow">
+                  {feature.description}
+                </p>
                 <div className="mt-4">
-                  <a href="#" className="text-blue-500 hover:text-blue-600 font-medium">
+                  <a
+                    href="#"
+                    className="text-blue-500 hover:text-blue-600 font-medium"
+                  >
                     Saiba mais &rarr;
                   </a>
                 </div>
@@ -57,6 +71,5 @@ export default function Features() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
