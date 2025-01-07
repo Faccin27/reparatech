@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useHeader } from "@/hooks/useHeader";
 
 export default function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const {isMobileMenuOpen, setIsMobileMenuOpen} = useHeader()
   return (
     <div className="w-full fixed top-0 left-0 px-4 pt-4 z-50">
       <header className="bg-[#121212] text-white px-4 py-3 rounded-2xl shadow-lg max-w-7xl mx-auto backdrop-blur-sm bg-opacity-90">

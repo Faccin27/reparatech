@@ -1,6 +1,5 @@
-import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
-import backg from '@/assets/back.png'
+import Link from 'next/link'
 
 export default function Hero() {
   return (
@@ -45,7 +44,7 @@ export default function Hero() {
           </div>
           
           {/* Scroll Indicator */}
-          <div className="bg-black bg-opacity-50 rounded-full p-2 mb-4 mr-4 animate-bounce">
+          <div className="bg-black bg-opacity-50 rounded-full p-2 mb-2 mr-4 animate-bounce cursor-pointer">
             <ChevronDown className="text-white" size={24} />
           </div>
         </div>
