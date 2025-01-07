@@ -24,7 +24,7 @@ export default function Agendamento() {
         <h2 className="text-3xl font-extrabold text-center mb-8">
           Agende seu Atendimento
         </h2>
-        <div className="bg-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="bg-gradient-to-br from-gray-800/60 to-black/50 rounded-2xl shadow-2xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
             {/* Calendário - Lado Esquerdo */}
             <div className="md:w-1/2 p-6 border-r border-gray-700">
@@ -80,7 +80,7 @@ export default function Agendamento() {
             </div>
 
             {/* Seleção de horario */}
-            <div className="md:w-1/2 p-6 bg-gray-700">
+            <div className="md:w-1/2 p-6 bg-gradient-to-tlfrom-gray-800/60 to-black/50 ">
               <h3 className="text-xl font-semibold mb-4">Horário Disponivel</h3>
               {selectedDate ? (
                 <div className="grid grid-cols-2 gap-4">
@@ -91,8 +91,8 @@ export default function Agendamento() {
                       className={`flex items-center justify-center p-3 rounded-lg transition-colors duration-200
                                 ${
                                   selectedTime === time
-                                    ? "bg-blue-500 text-white"
-                                    : "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                                    ? "bg-blue-800 text-white scale-[105%] transition-all duration-200"
+                                    : "bg-blue-900/60 text-gray-300 hover:bg-blue-500"
                                 }`}
                     >
                       <Clock size={18} className="mr-2" />
