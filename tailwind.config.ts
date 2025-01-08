@@ -9,6 +9,11 @@ export default {
   ],
   theme: {
   	extend: {
+		screens: {
+			'xs': '480px', 
+			'3xl': '1920px', 
+			'hk':'784px',
+		  },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -51,7 +56,8 @@ export default {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
-  	}
+  	},
+	  
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
