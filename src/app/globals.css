@@ -7,6 +7,9 @@
   --background2: #000000;
   --background3: #4a598b;
   --foreground: #171717;
+  --primary: ;
+  --secondary: #1d0dad4b;
+  --tertiary: #380dad;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,4 +30,20 @@ body {
     var(--background2)
   );
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+*::-webkit-scrollbar {
+  width: 17px;
+  background-color: #18181b ;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 6px;
+  border: 3px solid var(--primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--tertiary);
 }

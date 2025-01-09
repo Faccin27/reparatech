@@ -44,7 +44,7 @@ export default function Features() {
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-sky-200 text-center mb-12">
+        <h2 className="text-3xl font-extrabold text-white text-center mb-12">
           Nossos Serviços
         </h2>
         <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[600px]">

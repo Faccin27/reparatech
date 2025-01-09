@@ -14,9 +14,9 @@ export default function Hero() {
       ></div>
 
       {/* Content Container */}
-      <div className="relative z-10 px-4 py-8 flex flex-col justify-center flex-grow">
+      <div className="relative z-10 px-4 py-8 ml-16 flex flex-col justify-center flex-grow">
         {/* Minimal text above main text */}
-        <p className="text-blue-400 mb-2 text-sm md:text-base">
+        <p className="text-blue-400 mb-2 text-sm md:text-base font-semibold">
           Your Tech Guardian
         </p>
 
@@ -31,7 +31,7 @@ export default function Hero() {
             href="/learn-more"
             className="inline-block bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3 px-6 rounded-xl transition duration-300 ease-in-out"
           >
-            Schedule now
+            Agende agora
           </Link>
         </div>
       </div>
