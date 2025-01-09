@@ -4,6 +4,7 @@ import { useSchedule, horariosDisponiveis } from "@/hooks/useSchedule";
 import { format, isSameDay, isSameMonth, isToday } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import { ScheduleModal } from "./schedulemodal";
 
 export default function Agendamento() {
   const {
@@ -12,10 +13,13 @@ export default function Agendamento() {
     handleNextMonth,
     handlePrevMonth,
     handleTimeSelect,
+    handleModalClose,
+    handleAppointmentConfirm,
     currentMonth,
     monthDays,
     selectedDate,
     selectedTime,
+    isModalOpen,
   } = useSchedule();
 
   return (
@@ -120,6 +124,11 @@ export default function Agendamento() {
           </div>
         </div>
       </div>
+      <ScheduleModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onConfirm={handleAppointmentConfirm}
+      />
     </div>
   );
 }
