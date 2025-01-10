@@ -1,5 +1,7 @@
 import { Smartphone, Clock, PenToolIcon as Tools, Cpu } from 'lucide-react';
 import { EvervaultCard } from "./ui/evervault-card";
+import Phone from '@/assets/telefone.png';
+import Computador from "@/assets/computador.png";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -10,7 +12,7 @@ const features = [
     description:
       "Serviço especializado para smartphones de todas as marcas. Consertamos telas, baterias, problemas de software e muito mais.",
     gridClass: "col-span-1 row-span-2",
-    image: "/iphone.png",
+    image: Phone,
     imageAlt: "Reparo de iPhone",
     imagePosition: "bottom",
   },
@@ -27,7 +29,7 @@ const features = [
     description:
       "Diagnóstico e reparos especializados para todos os problemas de computador, desde hardware até software.",
     gridClass: "col-span-1 row-span-2",
-    image: "/macbook.png",
+    image: Computador,
     imageAlt: "Reparo de MacBook",
     imagePosition: "top",
   },
@@ -57,13 +59,12 @@ export default function Features() {
                 <div className="flex flex-col h-full z-50">
                   {feature.image && feature.imagePosition === 'top' && (
                     <div className="flex justify-center items-center flex-grow">
-                      <div className="relative w-[200px]">
+                      <div className="relative lg:mt-20">
                         <Image
                           src={feature.image}
                           alt={feature.imageAlt}
-                          width={200}
-                          height={200}
-                          style={{ width: '100%', height: 'auto' }}
+                          width={400}
+                          height={400}
                         />
                       </div>
                     </div>
@@ -92,12 +93,12 @@ export default function Features() {
                   </div>
                   {feature.image && feature.imagePosition === 'bottom' && (
                     <div className="flex justify-center items-center flex-grow mt-auto">
-                      <div className="relative w-[200px]">
+                      <div className="relative ">
                         <Image
                           src={feature.image}
                           alt={feature.imageAlt}
-                          width={200}
-                          height={200}
+                          width={600}
+                          height={600}
                           style={{ width: '100%', height: 'auto' }}
                         />
                       </div>
