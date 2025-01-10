@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
 		screens: {
-			'xs': '480px', 
+			'xsxs': '480px', 
 			'3xl': '1920px', 
 			'hk':'784px',
 		  },

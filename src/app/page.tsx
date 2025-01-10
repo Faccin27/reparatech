@@ -6,12 +6,12 @@ import Chatbot from '@/components/chatbot'
 
 export default function Home() {
   return (
-    <>
+    <div className='overflow-hidden'>
     <Hero/>
     <Feature />
     <Chatbot />
     <Schedule />
     <Footer />
-    </>
+    </div>
   );
 }
