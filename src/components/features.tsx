@@ -1,3 +1,5 @@
+'use client'
+
 import { Smartphone, Clock, PenToolIcon as Tools, Cpu } from 'lucide-react';
 import { EvervaultCard } from "./ui/evervault-card";
 import Phone from '@/assets/telefone.png';
@@ -49,7 +51,7 @@ export default function Features() {
         <h2 className="text-3xl font-extrabold text-white text-center mb-12">
           Nossos Serviços
         </h2>
-        <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[600px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:grid-rows-2 lg:h-[600px]">
           {features.map((feature, index) => (
             <div
               key={index}
@@ -58,13 +60,14 @@ export default function Features() {
               <EvervaultCard>
                 <div className="flex flex-col h-full z-50">
                   {feature.image && feature.imagePosition === 'top' && (
-                    <div className="flex justify-center items-center flex-grow">
-                      <div className="relative lg:mt-20">
+                    <div className="flex justify-center items-center flex-grow lg:mt-20">
+                      <div className="relative">
                         <Image
                           src={feature.image}
                           alt={feature.imageAlt}
-                          width={400}
-                          height={400}
+                          width={300}
+                          height={300}
+                          className="w-full h-auto max-h-[200px] lg:max-h-none object-contain lg:object-none"
                         />
                       </div>
                     </div>
@@ -75,11 +78,11 @@ export default function Features() {
                         className="h-8 w-8 text-blue-500"
                         aria-hidden="true"
                       />
-                      <h3 className="ml-3 text-xl font-semibold text-sky-500">
+                      <h3 className="ml-3 text-xl font-semibold text-sky-500 truncate lg:normal-case">
                         {feature.title}
                       </h3>
                     </div>
-                    <p className="text-base text-sky-300 break-words">
+                    <p className="text-base text-sky-300 line-clamp-3 lg:line-clamp-none">
                       {feature.description}
                     </p>
                     <div className="mt-2 z-50">
@@ -93,13 +96,13 @@ export default function Features() {
                   </div>
                   {feature.image && feature.imagePosition === 'bottom' && (
                     <div className="flex justify-center items-center flex-grow mt-auto">
-                      <div className="relative ">
+                      <div className="relative">
                         <Image
                           src={feature.image}
                           alt={feature.imageAlt}
-                          width={600}
-                          height={600}
-                          style={{ width: '100%', height: 'auto' }}
+                          width={350}
+                          height={350}
+                          className="w-full h-auto max-h-[200px] lg:max-h-none object-contain lg:object-none"
                         />
                       </div>
                     </div>
