@@ -17,12 +17,12 @@ export default function Hero() {
       <div className="relative z-10 px-4 py-8 ml-16 flex flex-col justify-center flex-grow">
         {/* Minimal text above main text */}
         <p className="text-blue-400 mb-2 text-sm md:text-base font-semibold">
-          Your Tech Guardian
+          Seu aliado na tecnologia
         </p>
 
         {/* Headline */}
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 max-w-2xl">
-          Tech Rescuers, Saving Your Devices and Your Day.
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 max-w-4xl">
+        Salvamos seus dispositivos e o seu dia com a ReparaTech.
         </h1>
 
         {/* CTA Button */}
