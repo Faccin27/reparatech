@@ -4,9 +4,19 @@ import { useState } from "react";
 import { Send } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+type Message = {
+  content: string;
+  role: "user" | "assistant";
+};
+
 export default function AIChatbot() {
   const [message, setMessage] = useState<string>("");
-  const [result, setResult] = useState<string>("");
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      content: "Olá! Como posso ajudar hoje?",
+      role: "assistant",
+    },
+  ]);
   
   const systemPrompt = `
   Você é o assistente virtual da ReparaTech, especializado em atendimento ao cliente para nossa assistência técnica de celulares, smartphones, computadores e notebooks.
@@ -73,9 +83,8 @@ export default function AIChatbot() {
   "Desculpe, sou especializado apenas em assuntos relacionados a reparos de celulares, smartphones, computadores e notebooks. Para outras informações, por favor, entre em contato com nossa equipe pelo telefone ou visite nossa loja."
 `;
 
-
   const genAI = new GoogleGenerativeAI(
-    "sua key aqui"
+    "Sua key aqui"
   );
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -85,16 +94,40 @@ export default function AIChatbot() {
     try {
       // Adiciona uma verificação inicial se a mensagem está vazia
       if (!message.trim()) {
-        setResult("Por favor, digite sua pergunta sobre nossos serviços de reparo de celulares.");
         return;
       }
 
-      const fullPrompt = `${systemPrompt}\n\nUsuário: ${message}\nAssistente:`;
+      // Add user message to chat
+      const userMessage: Message = {
+        content: message,
+        role: "user",
+      };
+      
+      setMessages(prev => [...prev, userMessage]);
+      
+      // Create conversation history for context
+      const conversationHistory = messages
+        .map(msg => `${msg.role === "user" ? "Usuário" : "Assistente"}: ${msg.content}`)
+        .join("\n");
+
+      const fullPrompt = `${systemPrompt}\n\n${conversationHistory}\nUsuário: ${message}\nAssistente:`;
+      
       let res = await model.generateContent(fullPrompt);
-      setResult(res.response.text());
+      
+      // Add assistant response to chat
+      const assistantMessage: Message = {
+        content: res.response.text(),
+        role: "assistant",
+      };
+      
+      setMessages(prev => [...prev, assistantMessage]);
       setMessage("");
     } catch (error) {
-      setResult("Desculpe, ocorreu um erro. Por favor, tente novamente ou entre em contato conosco diretamente.");
+      const errorMessage: Message = {
+        content: "Desculpe, ocorreu um erro. Por favor, tente novamente ou entre em contato conosco diretamente.",
+        role: "assistant",
+      };
+      setMessages(prev => [...prev, errorMessage]);
       console.error("Erro na geração:", error);
     }
   };
@@ -107,16 +140,22 @@ export default function AIChatbot() {
         </h2>
         <div className="bg-gray-900 rounded-lg shadow-lg p-6">
           <div className="h-96 mb-4 overflow-y-auto bg-gray-800 rounded-lg p-4">
-            <div className="w-8 h-8 rounded-full bg-white items-center flex justify-center mb-5">
-              <span className="text-black font-bold text-xl">R</span>
-            </div>
-            <p
-              className={`${
-                result === "" ? "text-zinc-500 animate-bounce duration-1000" : "text-white"
-              } font-bold text-xl`}
-            >
-              {result === "" ? "Olá! Como posso ajudar hoje?" : result}
-            </p>
+            {messages.map((msg, index) => (
+              <div key={index} className="mb-4">
+                {msg.role === "assistant" && (
+                  <div className="w-8 h-8 rounded-full bg-white items-center flex justify-center mb-2">
+                    <span className="text-black font-bold text-xl">R</span>
+                  </div>
+                )}
+                <div className={`${msg.role === "user" ? "ml-auto text-right" : ""} max-w-[80%]`}>
+                  <p className={`${
+                    msg.role === "user" ? "bg-blue-500/30" : "bg-gray-700"
+                  } inline-block rounded-lg px-4 py-2 text-white`}>
+                    {msg.content}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
           <form onSubmit={handleSubmit} className="flex">
             <input
