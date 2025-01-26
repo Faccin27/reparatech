@@ -15,7 +15,7 @@ export const horariosDisponiveis = [
   "14:00",
   "15:00",
   "16:00",
-  "17:00",
+  "17:00",  
   "18:00",
 ];
 
@@ -43,6 +43,8 @@ export function useSchedule() {
 
   const handleConfirm = () => {
     if (selectedDate && selectedTime) {
+      alert(selectedDate);
+      alert(selectedTime);
       setIsModalOpen(true);
     } else {
       alert("Por favor, selecione uma data e um horário.");

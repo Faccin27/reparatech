@@ -84,7 +84,7 @@ export default function AIChatbot() {
 `;
 
   const genAI = new GoogleGenerativeAI(
-    "Sua key aqui"
+    "sua key aqui"
   );
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -130,6 +130,7 @@ export default function AIChatbot() {
       setMessages(prev => [...prev, errorMessage]);
       console.error("Erro na geração:", error);
     }
+    setMessage("");
   };
 
   return (
