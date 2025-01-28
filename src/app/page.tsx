@@ -3,6 +3,7 @@ import Feature from '@/components/features'
 import Schedule from '@/components/schedule'
 import Footer from '@/components/footer'
 import Chatbot from '@/components/chatbot'
+import { useEffect } from 'react';
 
 export default function Home() {
   return (

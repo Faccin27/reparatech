@@ -7,15 +7,25 @@ import { X } from 'lucide-react'
 interface ScheduleModalProps {
   isOpen: boolean
   onClose: () => void
+  selectedDate: Date
+  selectedTime: string
+  onScheduleComplete?: (response: ScheduleResponse) => void
 }
+
 
 interface InputFieldProps {
   label: string
   id: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-  type?: 'text' | 'tel' | 'textarea' | 'date'
+  type?: 'text' | 'tel' | 'textarea'
   required?: boolean
+}
+
+export interface ScheduleResponse {
+  success: boolean
+  data?: any
+  error?: any
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -51,38 +61,54 @@ const InputField: React.FC<InputFieldProps> = ({
     )}
   </div>
 )
-
-export function ScheduleModal({ isOpen, onClose }: ScheduleModalProps) {
+export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onScheduleComplete }: ScheduleModalProps) {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [description, setDescription] = useState('')
-  const [datetime, setDatetime] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [scheduleResponse, setScheduleResponse] = useState<ScheduleResponse | null>(null)
 
-  const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDatetime(e.target.value);
+  const getTokenFromUrl = () => {
+    try {
+      const tokenParam = new URLSearchParams(window.location.search).get("token");
+      if (!tokenParam) {
+        throw new Error("Token não encontrado na URL");
+      }
+      
+      const decodedToken = decodeURIComponent(tokenParam).replace(/^["']|["']$/g, '');
+      
+      try {
+        return JSON.parse(decodedToken);
+      } catch {
+        return { accessToken: decodedToken };
+      }
+    } catch (error) {
+      console.error("Erro ao obter token:", error);
+      throw new Error("Token inválido ou não encontrado");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage("");
+    setScheduleResponse(null);
   
     try {
-      const tokenParam = new URLSearchParams(window.location.search).get("token");
-      const token = tokenParam ? JSON.parse(tokenParam.replace(/n"/g, "")) : null;
+      const token = getTokenFromUrl();
   
-      if (!datetime) {
-        throw new Error("Data ou horário não selecionado.");
-      }
-  
-      const startDateTime = new Date(datetime);
+      // Convert selected date and time to datetime
+      const [hours, minutes] = selectedTime.split(':');
+      const startDateTime = new Date(selectedDate);
+      startDateTime.toDateString();
+      startDateTime.setHours(parseInt(hours), parseInt(minutes), 0);
+      
       if (isNaN(startDateTime.getTime())) {
         throw new Error("Valor de data ou hora inválido.");
       }
   
-      const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
+      const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000);
   
       const response = await fetch("http://localhost:7865/auth/create-event", {
         method: "POST",
@@ -94,15 +120,24 @@ export function ScheduleModal({ isOpen, onClose }: ScheduleModalProps) {
           description: `Telefone para contato: ${phone}, resto: ${description}`,
           startDateTime: startDateTime.toISOString(),
           endDateTime: endDateTime.toISOString(),
-          token: token.accessToken,
+          token: token.accessToken || token,
         }),
       });
   
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+        throw new Error(data?.message || `Erro ${response.status}: ${response.statusText}`);
       }
   
-      const data = await response.json();
+      const scheduleResult: ScheduleResponse = {
+        success: true,
+        data: data
+      };
+      
+      setScheduleResponse(scheduleResult);
+      onScheduleComplete?.(scheduleResult);
+      
       console.log("Evento criado com sucesso:", data);
   
       setTimeout(() => {
@@ -111,11 +146,15 @@ export function ScheduleModal({ isOpen, onClose }: ScheduleModalProps) {
       }, 1000);
     } catch (error: any) {
       console.error("Erro ao criar evento:", error.message);
-      setErrorMessage(
-        error.message === "Data ou horário não selecionado."
-          ? "Por favor, selecione uma data e horário válidos."
-          : "Erro ao criar evento. Verifique as informações e tente novamente."
-      );
+      const errorResult: ScheduleResponse = {
+        success: false,
+        error: error.message
+      };
+      
+      setScheduleResponse(errorResult);
+      onScheduleComplete?.(errorResult);
+      
+      setErrorMessage(errorResult.error);
       setIsSubmitting(false);
     }
   };
@@ -139,25 +178,11 @@ export function ScheduleModal({ isOpen, onClose }: ScheduleModalProps) {
           <X size={24} />
         </button>
         <h2 className="text-2xl font-bold mb-4 text-white">Confirmar Agendamento</h2>
+        <div className="mb-4 text-gray-300">
+          <p>Data: {selectedDate.toLocaleDateString()}</p>
+          <p>Horário: {selectedTime}</p>
+        </div>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="datetime-input" className="block text-sm font-medium text-gray-300 mb-1">
-              Data e Hora
-            </label>
-            <input
-              type="datetime-local"
-              id="datetime-input"
-              value={datetime}
-              onChange={handleDateTimeChange}
-              className="w-full px-3 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            {datetime && (
-              <p className="text-sm text-gray-600 mt-1">
-                Selecionado: {new Date(datetime).toLocaleString()}
-              </p>
-            )}
-          </div>
           <InputField
             label="Nome"
             id="name"
