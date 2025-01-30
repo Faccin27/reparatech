@@ -132,7 +132,6 @@ export default function Agendamento() {
         onClose={handleModalClose}
         selectedDate={selectedDate}
         selectedTime={selectedTime}
-        onScheduleComplete={handleAppointmentConfirm}
       />
     )}
   </div>
