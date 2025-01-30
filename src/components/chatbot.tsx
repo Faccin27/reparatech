@@ -112,7 +112,7 @@ export default function AIChatbot() {
 
       const fullPrompt = `${systemPrompt}\n\n${conversationHistory}\nUsuário: ${message}\nAssistente:`;
       
-      let res = await model.generateContent(fullPrompt);
+      const res = await model.generateContent(fullPrompt);
       
       // Add assistant response to chat
       const assistantMessage: Message = {

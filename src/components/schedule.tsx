@@ -5,10 +5,8 @@ import { format, isSameDay, isSameMonth, isToday } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { ScheduleModal } from "./schedulemodal";
-import { useState } from "react";
 
 export default function Agendamento() {
-  const [modal, setModal] = useState<boolean>(false);
 
   const {
     handleConfirm,
@@ -25,18 +23,6 @@ export default function Agendamento() {
     isModalOpen,
   } = useSchedule();
 
-  const handleOpenModal = () => {
-    setModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setModal(false);
-  };
-
-  const handleChnageWebSite = () => {
-    window.location.href = "http://localhost:7865/auth/google";
-  };
-  
 
   return (
     <div className="text-white py-16">
