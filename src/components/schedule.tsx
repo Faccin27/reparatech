@@ -52,7 +52,7 @@ export default function Agendamento() {
                 </button>
               </div>
               <div className="grid grid-cols-7 gap-2">
-                {["D", "S", "T", "Q", "Q", "S", "S"].map((day) => (
+                {["D", "S", "T", "QA", "QI", "SE", "SA"].map((day) => (
                   <div key={day} className="text-center font-semibold">
                     {day}
                   </div>
