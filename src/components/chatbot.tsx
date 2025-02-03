@@ -136,9 +136,7 @@ export default function AIChatbot() {
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-extrabold text-white text-center mb-8">
-          Assistente Virtual ReparaTech
-        </h2>
+
         <div className="bg-gray-900 rounded-lg shadow-lg p-6">
           <div className="h-96 mb-4 overflow-y-auto bg-gray-800 rounded-lg p-4">
             {messages.map((msg, index) => (

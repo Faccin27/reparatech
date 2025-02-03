@@ -19,29 +19,30 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link
-              href="/"
+              href="#init"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Início
             </Link>
             <Link
-              href="/chat"
+              href="#services"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Serviços
+            </Link>
+            <Link
+              href="#chatbot"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Chat de Dúvidas
             </Link>
             <Link
-              href="/agendamento"
+              href="#schedule"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Agendamento
             </Link>
-            <Link
-              href="/contato"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Contato
-            </Link>
+
           </nav>
 
           {/* Contact Button */}
