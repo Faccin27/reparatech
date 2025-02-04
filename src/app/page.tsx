@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { motion, useAnimation, type Variants, useInView } from "framer-motion"
 import { useRef } from "react"
 import Hero from "@/components/hero"
@@ -8,7 +8,8 @@ import Feature from "@/components/features"
 import Schedule from "@/components/schedule"
 import Footer from "@/components/footer"
 import Chatbot from "@/components/chatbot"
-import type React from "react" 
+import { ConfirmationModal } from "@/components/ScheduleConfirmModal"
+import type React from "react"
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -49,27 +50,26 @@ function AnimatedSection({ children, variants }: { children: React.ReactNode; va
 }
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
+
   return (
     <div className="overflow-hidden">
       <AnimatedSection variants={fadeInUp}>
         <Hero />
-        <h2 className="text-3xl font-extrabold text-white text-center mt-12">
-          Nossos Serviços
-        </h2>
+        <h2 className="text-3xl font-extrabold text-white text-center mt-12">Nossos Serviços</h2>
       </AnimatedSection>
 
       <AnimatedSection variants={fadeInLeft}>
         <Feature />
-        <h2 className="text-3xl font-extrabold text-white text-center mb-8">
-          Assistente Virtual ReparaTech
-        </h2>
+        <h2 className="text-3xl font-extrabold text-white text-center mb-8">Assistente Virtual ReparaTech</h2>
       </AnimatedSection>
 
       <AnimatedSection variants={scaleIn}>
         <Chatbot />
-        <h2 className="text-3xl font-extrabold text-center mb-8 text-white">
-          Agende seu Atendimento
-        </h2>
+        <h2 className="text-3xl font-extrabold text-center mb-8 text-white">Agende seu Atendimento</h2>
       </AnimatedSection>
 
       <AnimatedSection variants={fadeInRight}>
@@ -79,6 +79,7 @@ export default function Home() {
       <AnimatedSection variants={fadeInUp}>
         <Footer />
       </AnimatedSection>
+
     </div>
   )
 }

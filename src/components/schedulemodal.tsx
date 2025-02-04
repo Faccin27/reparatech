@@ -1,9 +1,10 @@
-'use client'
+"use client"
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { X } from 'lucide-react'
-import Cookies from 'js-cookie'
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import { X } from "lucide-react"
+import Cookies from "js-cookie"
+import { ConfirmationModal } from "@/components/ScheduleConfirmModal"
 
 interface ScheduleModalProps {
   isOpen: boolean
@@ -17,7 +18,7 @@ interface InputFieldProps {
   id: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-  type?: 'text' | 'tel' | 'textarea'
+  type?: "text" | "tel" | "textarea"
   required?: boolean
 }
 
@@ -27,19 +28,12 @@ export interface ScheduleResponse {
   error?: any
 }
 
-const InputField: React.FC<InputFieldProps> = ({
-  label,
-  id,
-  value,
-  onChange,
-  type = 'text',
-  required = false,
-}) => (
+const InputField: React.FC<InputFieldProps> = ({ label, id, value, onChange, type = "text", required = false }) => (
   <div className="mb-4">
     <label htmlFor={id} className="block text-sm font-medium text-gray-300 mb-1">
       {label}
     </label>
-    {type === 'textarea' ? (
+    {type === "textarea" ? (
       <textarea
         id={id}
         value={value}
@@ -62,65 +56,65 @@ const InputField: React.FC<InputFieldProps> = ({
 )
 
 export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onScheduleComplete }: ScheduleModalProps) {
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [description, setDescription] = useState('')
+  const [name, setName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [description, setDescription] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState("")
   const [scheduleResponse, setScheduleResponse] = useState<ScheduleResponse | null>(null)
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false)
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin === 'https://reparatech-back-end-faccin.vercel.app' && 
-          event.data?.type === 'AUTH_SUCCESS') {
+      if (event.origin === "https://reparatech-back-end-faccin.vercel.app" && event.data?.type === "AUTH_SUCCESS") {
         // Salva o token nos cookies com expiração de 1 hora
-        Cookies.set('auth_token', event.data.token, { expires: 1/24 });
-        
+        Cookies.set("auth_token", event.data.token, { expires: 1 / 24 })
+
         // Se já estava tentando enviar, tenta novamente com o novo token
         if (isSubmitting) {
-          handleSubmit(new Event('submit') as any);
+          handleSubmit(new Event("submit") as any)
         }
       }
-    };
+    }
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [isSubmitting]);
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [isSubmitting])
 
   const redirectToAuth = () => {
     window.open(
-      'https://reparatech-back-end-faccin.vercel.app/auth/google',
-      'auth',
-      'width=500,height=600,left=200,top=200'
-    );
-  };
+      "https://reparatech-back-end-faccin.vercel.app/auth/google",
+      "auth",
+      "width=500,height=600,left=200,top=200",
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMessage("");
-    setScheduleResponse(null);
-  
+    e.preventDefault()
+    setIsSubmitting(true)
+    setErrorMessage("")
+    setScheduleResponse(null)
+
     try {
       // Tenta pegar o token dos cookies
-      const token = Cookies.get('auth_token');
-      
+      const token = Cookies.get("auth_token")
+
       if (!token) {
-        redirectToAuth();
-        return;
+        redirectToAuth()
+        return
       }
-  
-      const [hours, minutes] = selectedTime.split(':');
-      const startDateTime = new Date(selectedDate);
-      startDateTime.toDateString();
-      startDateTime.setHours(parseInt(hours), parseInt(minutes), 0);
-      
+
+      const [hours, minutes] = selectedTime.split(":")
+      const startDateTime = new Date(selectedDate)
+      startDateTime.toDateString()
+      startDateTime.setHours(Number.parseInt(hours), Number.parseInt(minutes), 0)
+
       if (isNaN(startDateTime.getTime())) {
-        throw new Error("Valor de data ou hora inválido.");
+        throw new Error("Valor de data ou hora inválido.")
       }
-  
-      const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000);
-  
+
+      const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000)
+
       const response = await fetch("https://reparatech-back-end-faccin.vercel.app/auth/create-event", {
         method: "POST",
         headers: {
@@ -133,47 +127,54 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
           endDateTime: endDateTime.toISOString(),
           token: token,
         }),
-      });
-  
-      const data = await response.json();
-      
-      if (!response.ok) {
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const scheduleResult: ScheduleResponse = {
+          success: true,
+          data: data,
+        }
+
+        setScheduleResponse(scheduleResult)
+        onScheduleComplete?.(scheduleResult)
+
+        setIsConfirmationModalOpen(true) // Open the confirmation modal
+        setIsSubmitting(false)
+      } else {
+        const data = await response.json()
         if (response.status === 401) {
           // Se o token expirou, remove dos cookies e redireciona para auth
-          Cookies.remove('auth_token');
-          redirectToAuth();
-          return;
+          Cookies.remove("auth_token")
+          redirectToAuth()
+          return
         }
-        throw new Error(data?.message || `Erro ${response.status}: ${response.statusText}`);
+        const errorResult: ScheduleResponse = {
+          success: false,
+          error: data?.message || `Erro ${response.status}: ${response.statusText}`,
+        }
+
+        setScheduleResponse(errorResult)
+        onScheduleComplete?.(errorResult)
+
+        setErrorMessage(errorResult.error)
+        setIsSubmitting(false)
       }
-  
-      const scheduleResult: ScheduleResponse = {
-        success: true,
-        data: data
-      };
-      
-      setScheduleResponse(scheduleResult);
-      onScheduleComplete?.(scheduleResult);
-      
-      setTimeout(() => {
-        setIsSubmitting(false);
-        onClose();
-      }, 1000);
     } catch (error: any) {
-      console.error("Erro ao criar evento:", error.message);
-      
+      console.error("Erro ao criar evento:", error.message)
+
       const errorResult: ScheduleResponse = {
         success: false,
-        error: error.message
-      };
-      
-      setScheduleResponse(errorResult);
-      onScheduleComplete?.(errorResult);
-      
-      setErrorMessage(errorResult.error);
-      setIsSubmitting(false);
+        error: error.message,
+      }
+
+      setScheduleResponse(errorResult)
+      onScheduleComplete?.(errorResult)
+
+      setErrorMessage(errorResult.error)
+      setIsSubmitting(false)
     }
-  };
+  }
 
   if (!isOpen) return null
 
@@ -199,13 +200,7 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
           <p>Horário: {selectedTime}</p>
         </div>
         <form onSubmit={handleSubmit}>
-          <InputField
-            label="Nome"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+          <InputField label="Nome" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
           <InputField
             label="Telefone para contato"
             id="phone"
@@ -222,20 +217,28 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
             type="textarea"
             required
           />
-          {errorMessage && (
-            <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
-          )}
+          {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
           <button
             type="submit"
             className={`w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200 ${
-              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
             }`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Enviando...' : 'Agendar'}
+            {isSubmitting ? "Enviando..." : "Agendar"}
           </button>
         </form>
+        <ConfirmationModal
+          isOpen={isConfirmationModalOpen}
+          onClose={() => {
+            setIsConfirmationModalOpen(false)
+            onClose()
+          }}
+          appointmentDate={selectedDate.toLocaleDateString()}
+          appointmentTime={selectedTime}
+        />
       </motion.div>
     </div>
   )
 }
+
