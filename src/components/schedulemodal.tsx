@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
+import Cookies from 'js-cookie'
 
 interface ScheduleModalProps {
   isOpen: boolean
@@ -11,7 +12,6 @@ interface ScheduleModalProps {
   selectedTime: string
   onScheduleComplete?: (response: ScheduleResponse) => void
 }
-
 interface InputFieldProps {
   label: string
   id: string
@@ -68,13 +68,14 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [scheduleResponse, setScheduleResponse] = useState<ScheduleResponse | null>(null)
-  const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin === 'https://reparatech-back-end-faccin.vercel.app' && 
           event.data?.type === 'AUTH_SUCCESS') {
-        setToken(event.data.token);
+        // Salva o token nos cookies com expiração de 1 hora
+        Cookies.set('auth_token', event.data.token, { expires: 1/24 });
+        
         // Se já estava tentando enviar, tenta novamente com o novo token
         if (isSubmitting) {
           handleSubmit(new Event('submit') as any);
@@ -101,6 +102,9 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
     setScheduleResponse(null);
   
     try {
+      // Tenta pegar o token dos cookies
+      const token = Cookies.get('auth_token');
+      
       if (!token) {
         redirectToAuth();
         return;
@@ -135,6 +139,8 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
       
       if (!response.ok) {
         if (response.status === 401) {
+          // Se o token expirou, remove dos cookies e redireciona para auth
+          Cookies.remove('auth_token');
           redirectToAuth();
           return;
         }
@@ -149,8 +155,6 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
       setScheduleResponse(scheduleResult);
       onScheduleComplete?.(scheduleResult);
       
-      console.log("Evento criado com sucesso:", data);
-  
       setTimeout(() => {
         setIsSubmitting(false);
         onClose();
