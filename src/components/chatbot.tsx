@@ -84,7 +84,7 @@ export default function AIChatbot() {
 `;
 
   const genAI = new GoogleGenerativeAI(
-    "sua key aqui"
+    "AIzaSyCe_rZZgF8EluXhoB55D6KhfEULC4VaVBM"
   );
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
