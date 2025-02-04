@@ -31,7 +31,11 @@ const scaleIn: Variants = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
 }
 
-function AnimatedSection({ children, variants }: { children: React.ReactNode; variants: Variants }) {
+function AnimatedSection({ children, variants, id }: { 
+  children: React.ReactNode; 
+  variants: Variants;
+  id?: string;
+}) {
   const controls = useAnimation()
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, amount: 0.3 })
@@ -43,7 +47,7 @@ function AnimatedSection({ children, variants }: { children: React.ReactNode; va
   }, [controls, inView])
 
   return (
-    <motion.div ref={ref} initial="hidden" animate={controls} variants={variants}>
+    <motion.div ref={ref} initial="hidden" animate={controls} variants={variants} id={id}>
       {children}
     </motion.div>
   )
@@ -56,23 +60,23 @@ export default function Home() {
   const closeModal = () => setIsModalOpen(false)
 
   return (
-    <div className="overflow-hidden">
-      <AnimatedSection variants={fadeInUp}>
+    <div className="overflow-hidden" id="init"> 
+      <AnimatedSection variants={fadeInUp} >
         <Hero />
-        <h2 className="text-3xl font-extrabold text-white text-center mt-12">Nossos Serviços</h2>
+        <h2 className="text-3xl font-extrabold text-white text-center mt-12" id="services">Nossos Serviços</h2>
       </AnimatedSection>
 
-      <AnimatedSection variants={fadeInLeft}>
+      <AnimatedSection variants={fadeInLeft} >
         <Feature />
-        <h2 className="text-3xl font-extrabold text-white text-center mb-8">Assistente Virtual ReparaTech</h2>
+        <h2 className="text-3xl font-extrabold text-white text-center mb-8 " id="chatbot">Assistente Virtual ReparaTech</h2>
       </AnimatedSection>
 
-      <AnimatedSection variants={scaleIn}>
+      <AnimatedSection variants={scaleIn} >
         <Chatbot />
-        <h2 className="text-3xl font-extrabold text-center mb-8 text-white">Agende seu Atendimento</h2>
+        <h2 className="text-3xl font-extrabold text-center mb-8 text-white" id="schedule">Agende seu Atendimento</h2>
       </AnimatedSection>
 
-      <AnimatedSection variants={fadeInRight}>
+      <AnimatedSection variants={fadeInRight} >
         <Schedule />
       </AnimatedSection>
 
