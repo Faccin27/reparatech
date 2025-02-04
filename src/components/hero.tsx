@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 export default function Hero() {
@@ -49,13 +49,16 @@ export default function Hero() {
                 Privacy Policy
               </Link>
               <Link
-                href="/refund"
+                href="/terms"
                 className="text-gray-300 hover:text-white hover:underline text-xs sm:text-sm"
               >
                 Refund Policy
               </Link>
               <Link
-                href="/contact"
+                href="https://wa.me/5549999422388"
+                passHref
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white hover:underline text-xs sm:text-sm"
               >
                 Contact Rescuers
@@ -72,4 +75,3 @@ export default function Hero() {
     </div>
   );
 }
-
