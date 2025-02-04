@@ -43,8 +43,6 @@ export function useSchedule() {
 
   const handleConfirm = () => {
     if (selectedDate && selectedTime) {
-      alert(selectedDate);
-      alert(selectedTime);
       setIsModalOpen(true);
     } else {
       alert("Por favor, selecione uma data e um horário.");

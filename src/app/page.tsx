@@ -80,6 +80,23 @@ export default function Home() {
         <Footer />
       </AnimatedSection>
 
+      {/* Botão de teste para o modal */}
+      <div className="fixed bottom-4 right-4">
+        <button
+          onClick={openModal}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300"
+        >
+          Testar Modal
+        </button>
+      </div>
+
+      {/* Modal de Confirmação */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        appointmentDate="01/03/2024"
+        appointmentTime="14:00"
+      />
     </div>
   )
 }
