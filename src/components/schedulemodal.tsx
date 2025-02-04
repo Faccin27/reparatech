@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
 
@@ -11,7 +11,6 @@ interface ScheduleModalProps {
   selectedTime: string
   onScheduleComplete?: (response: ScheduleResponse) => void
 }
-
 
 interface InputFieldProps {
   label: string
@@ -61,6 +60,7 @@ const InputField: React.FC<InputFieldProps> = ({
     )}
   </div>
 )
+
 export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onScheduleComplete }: ScheduleModalProps) {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -68,25 +68,30 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [scheduleResponse, setScheduleResponse] = useState<ScheduleResponse | null>(null)
+  const [token, setToken] = useState<string | null>(null)
 
-  const getTokenFromUrl = () => {
-    try {
-      const tokenParam = new URLSearchParams(window.location.search).get("token");
-      if (!tokenParam) {
-        throw new Error("Token não encontrado na URL");
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin === 'https://reparatech-back-end-faccin.vercel.app' && 
+          event.data?.type === 'AUTH_SUCCESS') {
+        setToken(event.data.token);
+        // Se já estava tentando enviar, tenta novamente com o novo token
+        if (isSubmitting) {
+          handleSubmit(new Event('submit') as any);
+        }
       }
-      
-      const decodedToken = decodeURIComponent(tokenParam).replace(/^["']|["']$/g, '');
-      
-      try {
-        return JSON.parse(decodedToken);
-      } catch {
-        return { accessToken: decodedToken };
-      }
-    } catch (error) {
-      console.error("Erro ao obter token:", error);
-      throw new Error("Token inválido ou não encontrado");
-    }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [isSubmitting]);
+
+  const redirectToAuth = () => {
+    window.open(
+      'https://reparatech-back-end-faccin.vercel.app/auth/google',
+      'auth',
+      'width=500,height=600,left=200,top=200'
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -96,9 +101,11 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
     setScheduleResponse(null);
   
     try {
-      const token = getTokenFromUrl();
+      if (!token) {
+        redirectToAuth();
+        return;
+      }
   
-      // Convert selected date and time to datetime
       const [hours, minutes] = selectedTime.split(':');
       const startDateTime = new Date(selectedDate);
       startDateTime.toDateString();
@@ -120,13 +127,17 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
           description: `Telefone para contato: ${phone}, resto: ${description}`,
           startDateTime: startDateTime.toISOString(),
           endDateTime: endDateTime.toISOString(),
-          token: token.accessToken || token,
+          token: token,
         }),
       });
   
       const data = await response.json();
       
       if (!response.ok) {
+        if (response.status === 401) {
+          redirectToAuth();
+          return;
+        }
         throw new Error(data?.message || `Erro ${response.status}: ${response.statusText}`);
       }
   
@@ -146,6 +157,7 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
       }, 1000);
     } catch (error: any) {
       console.error("Erro ao criar evento:", error.message);
+      
       const errorResult: ScheduleResponse = {
         success: false,
         error: error.message
