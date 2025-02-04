@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle, X } from "lucide-react";
 import Image from "next/image";
-import ConfirmSVG from "@/assets/Confirm.svg";
+import ConfirmSVG from "@/assets/Confirmed.svg";
 
 interface ConfirmationModalProps {
   isOpen: boolean;
