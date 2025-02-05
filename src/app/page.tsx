@@ -8,8 +8,8 @@ import Feature from "@/components/features"
 import Schedule from "@/components/schedule"
 import Footer from "@/components/footer"
 import Chatbot from "@/components/chatbot"
-import { ConfirmationModal } from "@/components/ScheduleConfirmModal"
 import type React from "react"
+import { Analytics } from "@vercel/analytics/react"
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
