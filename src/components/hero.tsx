@@ -42,12 +42,14 @@ export default function Hero() {
           {/* Policy Links */}
           <div className="bg-black bg-opacity-50 rounded-t-xl sm:rounded-tr-xl p-3 sm:p-4 inline-block border-t-2 border-blue-400/60 w-full sm:w-auto">
             <div className="flex flex-wrap justify-center sm:justify-start space-x-2 sm:space-x-4">
-              <Link
+              <a
+              
                 href="/privacy"
                 className="text-gray-300 hover:text-white hover:underline text-xs sm:text-sm"
+                
               >
                 Privacy Policy
-              </Link>
+              </a>
               <Link
                 href="/terms"
                 className="text-gray-300 hover:text-white hover:underline text-xs sm:text-sm"
