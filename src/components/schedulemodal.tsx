@@ -83,7 +83,7 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
 
   const redirectToAuth = () => {
     window.open(
-      "https://reparatech-back-end-faccin.vercel.app/auth/google",
+      "https://reparatech.shop/auth/google",
       "auth",
       "width=500,height=600,left=200,top=200",
     )
