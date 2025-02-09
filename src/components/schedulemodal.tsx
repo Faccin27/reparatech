@@ -66,7 +66,7 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin === "https://reparatech-back-end-faccin.vercel.app" && event.data?.type === "AUTH_SUCCESS") {
+      if (event.origin === "https://reparatech.shop" && event.data?.type === "AUTH_SUCCESS") {
         // Salva o token nos cookies com expiração de 1 hora
         Cookies.set("auth_token", event.data.token, { expires: 1 / 24 })
 
