@@ -115,7 +115,7 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime, onS
 
       const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000)
 
-      const response = await fetch("https://reparatech-back-end-faccin.vercel.app/auth/create-event", {
+      const response = await fetch("https://reparatech.shop/auth/create-event", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
