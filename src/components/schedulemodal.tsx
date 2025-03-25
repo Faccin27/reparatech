@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { X } from "lucide-react"
 import { ConfirmationModal } from "@/components/ScheduleConfirmModal"
+import emailjs from "emailjs-com"
 
 interface ScheduleModalProps {
   isOpen: boolean
@@ -59,20 +60,50 @@ export function ScheduleModal({ isOpen, onClose, selectedDate, selectedTime }: S
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    console.log("Appointment Details:", {
-      name,
-      phone,
-      description,
-      date: selectedDate.toLocaleDateString(),
-      time: selectedTime
-    })
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+    const userId = process.env.NEXT_PUBLIC_EMAILJS_USER_ID
 
-    // Delay to simulate processing
-    setTimeout(() => {
+    if (!serviceId || !templateId || !userId) {
+      console.error("EmailJS configuration is missing!")
+      setIsSubmitting(false)
+      return
+    }
+
+    emailjs.init(userId)
+
+    const templateParams = {
+      name: name,
+      email: phone, 
+      subject: "Agendamento de Serviço",
+      message: `
+        Nome: ${name}
+        Telefone: ${phone}
+        Data: ${selectedDate.toLocaleDateString()}
+        Horário: ${selectedTime}
+        Descrição: ${description}
+      `
+    }
+
+    try {
+      const response = await emailjs.send(
+        serviceId, 
+        templateId, 
+        templateParams
+      )
+
+      console.log("Email enviado com sucesso!", response)
+
       setIsSubmitting(false)
       setIsConfirmationModalOpen(true)
-    }, 1000)
+
+      setName("")
+      setPhone("")
+      setDescription("")
+    } catch (error) {
+      console.error("Falha no envio do email:", error)
+      setIsSubmitting(false)
+    }
   }
 
   if (!isOpen) return null
