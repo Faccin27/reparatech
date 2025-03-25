@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useHeader } from "@/hooks/useHeader";
 import Image from "next/image";
+import Logo from '@/assets/LogoW.png'
 
 export default function Header() {
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useHeader();
@@ -28,7 +29,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           <Link href="/" className="text-xl font-bold flex items-center gap-2">
             <Image
-              src="/logoW.png"
+              src={Logo}
               alt="Logo da ReparaTech"
               width={45}
               height={45}
