@@ -15,7 +15,6 @@ export default function Agendamento() {
     handlePrevMonth,
     handleTimeSelect,
     handleModalClose,
-    handleAppointmentConfirm,
     currentMonth,
     monthDays,
     selectedDate,

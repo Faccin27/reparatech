@@ -53,22 +53,6 @@ export function useSchedule() {
     setIsModalOpen(false);
   };
 
-  const handleAppointmentConfirm = (name: string, phone: string, description: string) => {
-    console.log(
-      "Agendamento confirmado para:",
-      format(selectedDate!, "dd/MM/yyyy"),
-      "às",
-      selectedTime,
-      "Nome:",
-      name,
-      "Telefone:",
-      phone,
-      "Descrição:",
-      description
-    );
-    // Implement Google Calendar integration here
-  };
-
   return {
     handleConfirm,
     handleDateSelect,
@@ -76,7 +60,6 @@ export function useSchedule() {
     handlePrevMonth,
     handleTimeSelect,
     handleModalClose,
-    handleAppointmentConfirm,
     currentMonth,
     monthDays,
     selectedDate,
@@ -84,4 +67,3 @@ export function useSchedule() {
     isModalOpen,
   };
 }
-
