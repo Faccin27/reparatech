@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useHeader } from "@/hooks/useHeader";
+import Image from "next/image";
 
 export default function Header() {
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useHeader();
@@ -26,9 +27,13 @@ export default function Header() {
       <header className="bg-[#121212] text-white px-4 py-3 rounded-2xl shadow-lg max-w-7xl mx-auto backdrop-blur-sm bg-opacity-90">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-xl font-bold flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-              <span className="text-black font-bold">R</span>
-            </div>
+            <Image
+              src="/logoW.png"
+              alt="Logo da ReparaTech"
+              width={45}
+              height={45}
+              className="rounded-full"
+            />
             ReparaTech
           </Link>
 
