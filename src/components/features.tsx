@@ -6,6 +6,7 @@ import Phone from '@/assets/telefone.png';
 import Computador from "@/assets/computador.png";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from './ui/button';
 
 const features = [
   {
@@ -43,6 +44,17 @@ const features = [
     gridClass: "col-span-1 row-span-1",
   },
 ];
+
+const scrollToSection = (sectionId: string) => {
+  if (sectionId === "top") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+};
 
 export default function Features() {
   return (
@@ -82,13 +94,13 @@ export default function Features() {
                     <p className="text-base text-sky-300 line-clamp-3 lg:line-clamp-none">
                       {feature.description}
                     </p>
-                    <div className="mt-2 z-50">
-                      <Link
-                        href="#"
-                        className="text-blue-500 hover:text-blue-600 font-medium"
+                    <div className="z-50">
+                      <p
+                        onClick={() => scrollToSection("chatbot")}
+                        className="text-blue-500 hover:text-blue-600 font-medium text-base"
                       >
                         Saiba mais &rarr;
-                      </Link>
+                      </p>
                     </div>
                   </div>
                   {feature.image && feature.imagePosition === 'bottom' && (
