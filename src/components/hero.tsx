@@ -1,6 +1,18 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 
+const scrollToSection = (sectionId: string) => {
+  if (sectionId === "top") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+};
+
 export default function Hero() {
   return (
     <div className="relative h-[70vh] sm:h-[80vh] md:h-[70vh] w-[90%] sm:w-[95%] max-w-7xl rounded-xl mx-auto flex flex-col justify-between bg-[#121212] bg-opacity-80 overflow-hidden">
@@ -27,12 +39,12 @@ export default function Hero() {
 
         {/* CTA Button */}
         <div>
-          <Link
-            href="/learn-more"
+          <button
+          onClick={() => scrollToSection("schedule")}
             className="inline-block bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-xl transition duration-300 ease-in-out text-sm sm:text-base"
           >
             Agende agora
-          </Link>
+          </button>
         </div>
       </div>
 
